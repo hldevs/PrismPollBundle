@@ -7,4 +7,4 @@ services:
         tags:
             - { name: doctrine.event_listener, event: loadClassMetadata }
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
