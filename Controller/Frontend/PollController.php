@@ -11,16 +11,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PollController extends Controller
 {
+    private $pollEntity;
+    private $opinionEntity;
+    private $pollEntityRepository;
+    private $opinionEntityRepository;
+    private $voteForm;
+
     /**
      * Init
      */
     public function init()
     {
-        $this->pollEntity = $this->container->getParameter('prism_poll.poll_entity');
-        $this->opinionEntity = $this->container->getParameter('prism_poll.opinion_entity');
+        $this->pollEntity = $this->getParameter('prism_poll.poll_entity');
+        $this->opinionEntity = $this->getParameter('prism_poll.opinion_entity');
         $this->pollEntityRepository = $this->getDoctrine()->getManager()->getRepository($this->pollEntity);
         $this->opinionEntityRepository = $this->getDoctrine()->getManager()->getRepository($this->opinionEntity);
-        $this->voteForm = $this->container->getParameter('prism_poll.vote_form');
+        $this->voteForm = $this->getParameter('prism_poll.vote_form');
     }
 
     /**
@@ -71,7 +77,12 @@ class PollController extends Controller
             $opinionsChoices[$opinion->getId()] = $opinion->getName();
         }
 
-        $form = $this->container->get('form.factory')->createNamed('poll' . $pollId, new $this->voteForm, null, array('opinionsChoices' => $opinionsChoices));
+        $form = $this->get('form.factory')->createNamed(
+            'poll' . $pollId,
+            get_class($this->voteForm),
+            null,
+            array('opinionsChoices' => $opinionsChoices)
+        );
 
         if ('POST' == $request->getMethod()) {
 
@@ -138,7 +149,13 @@ class PollController extends Controller
      */
     protected function addVotingProtection($pollId, $response)
     {
-        return $response->headers->setCookie(new Cookie('prism_poll_' . $pollId, true, time()+3600*24*365));
+        return $response->headers->setCookie(
+            new Cookie(
+                'prism_poll_' . $pollId,
+                true,
+                time()+3600*24*365
+            )
+        );
     }
 
     /**
@@ -151,7 +168,6 @@ class PollController extends Controller
      */
     protected function hasVoted(Request $request, $pollId)
     {
-        return false;
         $cookies = $request->cookies;
         if ($cookies->has('prism_poll_' . $pollId)) {
             return true;
