@@ -86,7 +86,7 @@ class PollController extends Controller
 
         if ('POST' == $request->getMethod()) {
 
-            $form->submit($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
 
