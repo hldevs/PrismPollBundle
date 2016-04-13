@@ -24,13 +24,15 @@ class VoteType extends AbstractType
     {
         $builder
             ->add('opinions', ChoiceType::class, array(
-                'multiple' => false,
-                'expanded' => true,
-                'choices' => $options['opinionsChoices'],
-                'constraints' => array(
-                    new NotNull(array('message' => "Please select a choice.")),
-                    new Choice(array('choices' => array_keys($options['opinionsChoices'])))
-                ))
+                    'multiple' => false,
+                    'expanded' => true,
+                    'choices' => $options['opinionsChoices'],
+                    'choices_as_values' => true,
+                    'constraints' => array(
+                        new NotNull(array('message' => "Please select a choice.")),
+                        new Choice(array('choices' => array_keys($options['opinionsChoices'])))
+                    )
+                )
             );
     }
 
