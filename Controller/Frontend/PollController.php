@@ -74,7 +74,7 @@ class PollController extends Controller
 
         $opinionsChoices = array();
         foreach ($poll->getOpinions() as $opinion) {
-            $opinionsChoices[$opinion->getId()] = $opinion->getName();
+            $opinionsChoices[$opinion->getName()] = $opinion->getId();
         }
 
         $form = $this->get('form.factory')->createNamed(
