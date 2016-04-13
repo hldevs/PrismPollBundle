@@ -3,9 +3,9 @@
 namespace Prism\PollBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Choice;
 
@@ -23,7 +23,7 @@ class VoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('opinions', 'choice', array(
+            ->add('opinions', ChoiceType::class, array(
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => $options['opinionsChoices'],
@@ -39,7 +39,7 @@ class VoteType extends AbstractType
      *
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return "vote";
     }
@@ -47,9 +47,9 @@ class VoteType extends AbstractType
     /**
      * Set Default Options
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('opinionsChoices'));
     }
