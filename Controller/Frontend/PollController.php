@@ -79,7 +79,7 @@ class PollController extends Controller
 
         $form = $this->get('form.factory')->createNamed(
             'poll' . $pollId,
-            get_class($this->voteForm),
+            get_class(new $this->voteForm),
             null,
             array('opinionsChoices' => $opinionsChoices)
         );
