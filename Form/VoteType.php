@@ -29,8 +29,7 @@ class VoteType extends AbstractType
                     'choices' => $options['opinionsChoices'],
                     'choices_as_values' => true,
                     'constraints' => array(
-                        new NotNull(array('message' => "Please select a choice.")),
-                        new Choice(array('choices' => array_keys($options['opinionsChoices'])))
+                        new NotNull(array('message' => "Please select a choice."))
                     )
                 )
             );
